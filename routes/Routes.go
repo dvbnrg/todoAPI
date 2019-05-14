@@ -1,6 +1,10 @@
-package main
+package routes
 
-import "net/http"
+import (
+	"net/http"
+
+	handle "github.com/dvbnrg/todoAPI/handlers"
+)
 
 type Route struct {
 	Name        string
@@ -16,24 +20,24 @@ var routes = Routes{
 		"Index",
 		"GET",
 		"/",
-		Index,
+		handle.Index,
 	},
 	Route{
 		"TodoIndex",
 		"GET",
 		"/todos",
-		TodoIndex,
+		handle.TodoIndex,
 	},
 	Route{
 		"TodoShow",
 		"GET",
 		"/todos/{todoId}",
-		TodoShow,
+		handle.TodoShow,
 	},
 	Route{
 		"TodoCreate",
 		"POST",
 		"/todos",
-		TodoCreate,
+		handle.TodoCreate,
 	},
 }
