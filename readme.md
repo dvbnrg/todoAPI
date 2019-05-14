@@ -10,4 +10,3 @@ TODO:
 - Unit Tests
 - Dockerize
 - Add MySQL Database
-- Put files in appropriate folders
