@@ -29,15 +29,15 @@ var routes = Routes{
 		handle.TodoIndex,
 	},
 	Route{
-		"TodoShow",
-		"GET",
-		"/todos/{todoId}",
-		handle.TodoShow,
-	},
-	Route{
 		"TodoCreate",
 		"POST",
 		"/todos",
 		handle.TodoCreate,
+	},
+	Route{
+		"TodoGet",
+		"GET",
+		"/todos/{todoId}",
+		handle.TodoGet,
 	},
 }

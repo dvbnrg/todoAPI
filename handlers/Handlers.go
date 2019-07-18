@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 
 	model "github.com/dvbnrg/todoAPI/model"
 	repository "github.com/dvbnrg/todoAPI/repository"
@@ -19,15 +20,10 @@ func Index(w http.ResponseWriter, r *http.Request) {
 func TodoIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
+
 	if err := json.NewEncoder(w).Encode(repository.Todos); err != nil {
 		panic(err)
 	}
-}
-
-func TodoShow(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	todoId := vars["todoId"]
-	fmt.Fprintln(w, "Todo show:", todoId)
 }
 
 func TodoCreate(w http.ResponseWriter, r *http.Request) {
@@ -53,4 +49,20 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewEncoder(w).Encode(t); err != nil {
 		panic(err)
 	}
+}
+
+func TodoGet(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+
+	id := mux.Vars(r)
+
+	i, err := strconv.Atoi(id["todoId"])
+	if err != nil {
+		panic(err)
+	}
+
+	todo := repository.RepoFindTodo(i)
+
+	json.NewEncoder(w).Encode(&todo)
 }

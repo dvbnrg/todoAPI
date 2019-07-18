@@ -10,20 +10,21 @@ var currentId int
 
 var Todos model.Todos
 
-// Give us some seed data
-func init() {
-	RepoCreateTodo(model.Todo{Name: "Write presentation"})
-	RepoCreateTodo(model.Todo{Name: "Host meetup"})
-}
-
 func RepoFindTodo(id int) model.Todo {
-	for _, t := range Todos {
-		if t.Id == id {
-			return t
-		}
+	var todo model.Todo
+	
+	db := dbConn()
+	
+	results, err := db.Query("SELECT * FROM todos WHERE id=?", id)
+	if err != nil {
+		panic(err)
 	}
-	// return empty Todo if not found
-	return model.Todo{}
+
+	for results.Next(){
+		results.Scan(&todo.Id, &todo.Name, &todo.Completed)
+	}
+	defer db.Close()
+	return todo
 }
 
 func RepoCreateTodo(t model.Todo) model.Todo {
