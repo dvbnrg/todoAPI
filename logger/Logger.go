@@ -3,6 +3,7 @@ package logger
 import (
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -12,12 +13,24 @@ func Logger(inner http.Handler, name string) http.Handler {
 
 		inner.ServeHTTP(w, r)
 
+		pid := os.Getpid()
+
+		hostname, _ := os.Hostname()
+
 		log.Printf(
-			"%s\t%s\t%s\t%s",
+			"%s\t%s\t%s\t%s\t%v\t%s\t%v\t%s\t%v\t%v",
 			r.Method,
 			r.RequestURI,
 			name,
-			time.Since(start),
+			time.Since(start).String(),
+			pid,
+			hostname,
+			r.Header.Get("User-Agent"),
+			r.Host,
+			r.RemoteAddr,
+			r.UserAgent(),
+			// w.Header,
+			// r.Response.Body,
 		)
 	})
 }
